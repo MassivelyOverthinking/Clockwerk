@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "async_uptime_monitor"
+version = "0.1.0"
+description = "An asynchronous uptime and latency system designed to monitor API endpoints"
+readme = { file = "README.md", content-type = "text/markdown" }
+license = { file = "LICENSE" }
+authors = [
+    {name = "HysingerDev", email = "HysingerDev@gmail.com"}
+]
+requires-python = ">=3.8"
+keywords = [
+    "API",
+    "async",
+    "uptime",
+    "security",
+    "troubleshooting",
+    "python"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Security :: Cryptography",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Intended Audience :: Developers"
+]
+dependencies = []
