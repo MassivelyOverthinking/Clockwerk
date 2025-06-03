@@ -1,11 +1,13 @@
 #-------------------- Imports --------------------
 
+import json
+
 from models import MonitorResult
 from config import LATENCY_THRESHOLD
 
 #-------------------- Utility Functions --------------------
 
-def create_msg(result: MonitorResult) -> dict[str]:
+def create_msg(result: MonitorResult) -> str:
     alert_msg = {
         "Endpoint": result.endpoint_name,
         "Timestamp": str(result.timestamp),
@@ -14,4 +16,4 @@ def create_msg(result: MonitorResult) -> dict[str]:
         "Latency": result.latency,
         "Error": result.error
     }
-    return alert_msg
+    return json.dumps(alert_msg, indent=2, sort_keys=True, ensure_ascii=True)

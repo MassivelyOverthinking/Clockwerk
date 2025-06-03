@@ -31,6 +31,5 @@ async def check_endpoint(session, endpoint: dict) -> MonitorResult:
             status_code=0,
             latency=latency,
             success=False,
-            timestamp=datetime.now(),
             error=str(err)
         )
