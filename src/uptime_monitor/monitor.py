@@ -6,12 +6,13 @@ import aiohttp
 from time import perf_counter
 from models import MonitorResult
 from datetime import datetime
+from models import EmailConfig, Endpoint
 
 #-------------------- Monitor Function --------------------
 
-async def check_endpoint(session, endpoint: dict) -> MonitorResult:
-    url = endpoint["url"]
-    timeout = endpoint.get("timeout", 3)
+async def check_endpoint(session, endpoint: Endpoint, email_config: EmailConfig) -> MonitorResult:
+    url = endpoint.url
+    timeout = endpoint.timeout
 
     start = perf_counter()
     try:

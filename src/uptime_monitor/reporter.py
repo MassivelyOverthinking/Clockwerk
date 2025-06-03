@@ -7,9 +7,8 @@ import aiosmtplib
 from models import MonitorResult
 from config import LATENCY_THRESHOLD
 from utils import create_msg
+from models import EmailConfig
 from email.message import EmailMessage
-
-from config import SMTP_HOST, SMTP_PORT, EMAIL_FROM, EMAIL_TO
 
 #-------------------- Reporting Function --------------------
 
@@ -29,16 +28,16 @@ async def handle_result(result: MonitorResult):
             subject=alert_subject
         )
 
-async def send_email_alert(message: str, subject: str):
+async def send_email_alert(message: str, subject: str, config: EmailConfig):
     email_msg = EmailMessage()
-    email_msg["From"] = EMAIL_FROM
-    email_msg["To"] = EMAIL_TO
+    email_msg["From"] = config.email_from
+    email_msg["To"] = config.email_to
     email_msg["Subject"] = subject
     email_msg.set_content(message)
     
     try:
         await aiosmtplib.send(
-            email_msg, hostname=SMTP_HOST, port=SMTP_PORT
+            email_msg, hostname=config.smtp_host, port=config.smtp_port
         )
     except aiosmtplib.SMTPException as err:
         print(f"Failed to send the email: {err}")
