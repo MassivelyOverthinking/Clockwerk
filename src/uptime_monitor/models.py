@@ -1,21 +1,22 @@
 #-------------------- Imports --------------------
 
 from dataclasses import dataclass, field
+from typing import Optional
 from typing import List
 from datetime import datetime
 from pydantic import BaseModel, Field, field_validator, EmailStr, AnyHttpUrl
-
+from models import LoggerConfig
 
 #-------------------- Monitor Result --------------------
 
-@dataclass
-class MonitorResult:
-    endpoint_name: str = None
-    timestamp: datetime = field(default_factory=datetime.now())
-    status_code: int = None
-    latency: float = None
+class MonitorResult(BaseModel):
+    endpoint_name: Optional[str] = None
+    timestamp: datetime = Field(default_factory=datetime.now())
+    status_code: Optional[int] = 0
+    latency: Optional[float] = None
     success: bool = False
-    error: str = None
+    error: Optional[str] = None
+
 
 class Endpoint(BaseModel):
     url: AnyHttpUrl

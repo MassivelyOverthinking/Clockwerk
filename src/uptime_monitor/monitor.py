@@ -6,7 +6,18 @@ import aiohttp
 from time import perf_counter
 from models import MonitorResult
 from datetime import datetime
-from models import EmailConfig, Endpoint
+from models import EmailConfig, Endpoint, LoggerConfig
+from logger import setup_logger
+
+#-------------------- Logger Setup --------------------
+
+log_config = LoggerConfig(
+    log_level="INFO",
+    log_file="monitor.log",
+    log_to_file=True
+)
+
+logger = setup_logger(__name__, log_config)
 
 #-------------------- Monitor Function --------------------
 
@@ -27,6 +38,7 @@ async def check_endpoint(session, endpoint: Endpoint, email_config: EmailConfig)
             )
     except Exception as err:
         latency = perf_counter() - start
+        logger.info(f"Unexpected exception occured {err}")
         return MonitorResult(
             endpoint_name=url,
             status_code=0,
