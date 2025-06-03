@@ -2,12 +2,14 @@
 
 import asyncio
 import aiohttp
+import logging
+from aiohttp import ClientError, ClientTimeout
 
 from time import perf_counter
 from models import MonitorResult
-from datetime import datetime
 from models import EmailConfig, Endpoint, LoggerConfig
 from logger import setup_logger
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type, before_sleep_log
 
 #-------------------- Logger Setup --------------------
 
@@ -21,21 +23,35 @@ logger = setup_logger(__name__, log_config)
 
 #-------------------- Monitor Function --------------------
 
+@retry(
+        reraise=True,
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=1, max=10),
+        retry=retry_if_exception_type(ClientError, asyncio.TimeoutError),
+        before_sleep=before_sleep_log(logger, logging.WARNING)
+)
+async def _safe_session(session: aiohttp.ClientSession, url: str, timeout: int):
+    async with session.get(url, timeout=ClientTimeout(total=timeout)) as resp:
+        await resp.read()
+        return resp
+
+
 async def check_endpoint(session, endpoint: Endpoint, email_config: EmailConfig) -> MonitorResult:
-    url = endpoint.url
+    url = str(endpoint.url)
     timeout = endpoint.timeout
 
     start = perf_counter()
     try:
-        async with session.get(url, timeout=timeout) as resp:
-            latency = perf_counter() - start
-            return MonitorResult(
-                endpoint_name=url,
-                status_code=resp.status,
-                latency=latency,
-                success=resp.status == 200,
-                error=None if resp.status == 200 else f"Unexpected status {resp.status}"
-            )
+        resp = await _safe_session(session, url, timeout)
+        latency = perf_counter() - start
+
+        return MonitorResult(
+            endpoint_name=url,
+            status_code=resp.status,
+            latency=latency,
+            success=resp.status == 200,
+            error=None if resp.status == 200 else f"Unexpected status {resp.status}"
+        )
     except Exception as err:
         latency = perf_counter() - start
         logger.info(f"Unexpected exception occured {err}")

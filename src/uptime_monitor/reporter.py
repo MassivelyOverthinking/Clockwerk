@@ -4,11 +4,10 @@ import asyncio
 import aiohttp
 import aiosmtplib
 
-from models import MonitorResult
-from config import LATENCY_THRESHOLD
 from utils import create_msg
-from models import EmailConfig, MonitorConfig, LoggerConfig
+from models import EmailConfig, MonitorConfig, LoggerConfig, MonitorResult
 from email.message import EmailMessage
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 from logger import setup_logger
 
@@ -41,6 +40,12 @@ async def handle_result(result: MonitorResult, monitor_config: MonitorConfig, em
             config=email_config
         )
 
+@retry(
+        reraise=True,
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=1, max=10),
+        retry=retry_if_exception_type(aiosmtplib.SMTPException)
+)
 async def send_email_alert(message: str, subject: str, email_config: EmailConfig):
     email_msg = EmailMessage()
     email_msg["From"] = email_config.email_from

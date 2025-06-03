@@ -5,7 +5,6 @@ from typing import Optional
 from typing import List
 from datetime import datetime
 from pydantic import BaseModel, Field, field_validator, EmailStr, AnyHttpUrl
-from models import LoggerConfig
 
 #-------------------- Monitor Result --------------------
 

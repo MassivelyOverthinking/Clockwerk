@@ -1,10 +1,8 @@
 #-------------------- Imports --------------------
 
 import logging
-import os
 
 from logging.handlers import RotatingFileHandler
-from dotenv import load_dotenv
 from models import LoggerConfig
 
 #-------------------- Logging Configuration --------------------
