@@ -4,8 +4,8 @@ import asyncio
 import aiohttp
 import aiosmtplib
 
-from utils import create_msg
-from models import EmailConfig, MonitorConfig, MonitorResult
+from utils import create_msg, write_to_db
+from models import EmailConfig, MonitorConfig, MonitorResult, DatabaseConfig
 from email.message import EmailMessage
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
@@ -17,31 +17,41 @@ logger = get_logger()
 
 #-------------------- Reporting Function --------------------
 
-async def handle_result(result: MonitorResult, monitor_config: MonitorConfig, email_config: EmailConfig):
-    if not result.success:
-        alert_subject = f"[OUTAGE ALERT] - {result.endpoint_name} is experiencing an outage"
-        alert_msg = create_msg(result=result)
-        try:
+async def handle_result(
+        result: MonitorResult,
+        monitor_config: MonitorConfig,
+        email_config: EmailConfig,
+        db_config: DatabaseConfig
+    ):
+
+    # Step 1: Write to DB is activation is enabled
+    if db_config.db_activation:
+        write_to_db(result, db_config)
+
+    # Step 2: Write the appopriate Alert messages
+
+    try:
+        if not result.success:
+            alert_subject = f"[OUTAGE ALERT] - {result.endpoint_name} is experiencing an outage"
+            alert_msg = create_msg(result=result)
             await send_email_alert(
                 message=alert_msg,
                 subject=alert_subject,
                 email_config=email_config
             )
             logger.info("Outage message sent!")
-        except Exception as err:
-            logger.error(f"Critical: Outage e-mail could not be sent: {err}")
-    elif result.latency >= monitor_config.latency_threshold:
-        alert_subject = f"[LATENCY ALERT] - {result.endpoint_name} is experiencing latency"
-        alert_msg = create_msg(result=result)
-        try:
+        elif result.latency >= monitor_config.latency_threshold:
+            alert_subject = f"[LATENCY ALERT] - {result.endpoint_name} is experiencing latency"
+            alert_msg = create_msg(result=result)
             await send_email_alert(
                 message=alert_msg,
                 subject=alert_subject,
                 email_config=email_config
             )
             logger.info("Latency message sent!")
-        except Exception as err:
-            logger.error(f"Critical: Latency e-mail could not be sent: {err}")
+    except Exception as err:
+        logger.error(f"Critical: Latency e-mail could not be sent: {err}")
+
 
 @retry(
         reraise=True,

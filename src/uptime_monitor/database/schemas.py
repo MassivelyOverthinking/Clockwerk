@@ -1,8 +1,6 @@
 #-------------------- Imports --------------------
 
-import datetime
-from datetime import datetime as dt
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import String
@@ -19,7 +17,7 @@ class EndpointStatus(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     url: Mapped[str] = mapped_column(unique=True)
     current_status: Mapped[str] = mapped_column(String(50))
-    last_updated: Mapped[dt] = mapped_column(default_factory=dt.now(datetime.timezone(offset=timedelta(0))))
+    last_updated: Mapped[datetime] = mapped_column(default_factory=lambda: datetime.now(timezone(offset=timedelta(0))))
 
 
 class MonitorHistory(Base):
@@ -27,8 +25,8 @@ class MonitorHistory(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     url: Mapped[str]
-    timestamp: Mapped[dt] = mapped_column(default_factory=dt.now(datetime.timezone(offset=timedelta(0))))
-    status_code: Mapped[int] = mapped_column(default="OK")
+    timestamp: Mapped[datetime] = mapped_column(default_factory=lambda: datetime.now(timezone(offset=timedelta(0))))
+    status_code: Mapped[int]
     latency: Mapped[float]
     success: Mapped[bool] = mapped_column(default=True)
     error: Mapped[str] = mapped_column(String(255))
