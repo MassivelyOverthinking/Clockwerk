@@ -18,7 +18,7 @@ async def scheduling_loop(monitor_config: MonitorConfig, email_config: EmailConf
     async with aiohttp.ClientSession() as session:
         while True:
             tasks = [check_endpoint(session=session, endpoint=ep, email_config=email_config) for ep in monitor_config.endpoints]
-            results = await asyncio.gather(*tasks)
+            results = await asyncio.gather(*tasks, return_exceptions=True)
             
             await asyncio.gather(*(handle_result(result, monitor_config, email_config) for result in results))
             logger.info("All Endpoints have been checked and appropriate measures taken!")

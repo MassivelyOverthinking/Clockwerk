@@ -1,6 +1,5 @@
 #-------------------- Imports --------------------
 
-from dataclasses import dataclass, field
 from typing import Optional
 from typing import List
 from datetime import datetime
@@ -49,5 +48,29 @@ class MonitorConfig(BaseModel):
     endpoints: List[Endpoint]
     check_interval: int = Field(default=60, ge=5, description="Interval between Uptime checks")
     latency_threshold: float = Field(default=1.5, ge=0.5, description="Max acceptable latency in seconds")
+
+
+class DatabaseConfig(BaseModel):
+    driver_name: str
+    db_host_name: Optional[str] = None
+    db_username: Optional[str] = None
+    db_name: Optional[str] = None
+    db_password: Optional[str] = None
+    db_port: Optional[int] = 5437
+    db_activation: bool = False
+    echo_mode: bool = False
+
+    @field_validator("driver_name")
+    def validate_driver(cls, v: str):
+        drivers = {
+            "mysql": "mysql+mysqlconnector",
+            "postgresql": "postgresql+asyncpg",
+            "sqlite": "sqlite+aiosqlite"
+        }
+        if v.lower() not in drivers:
+            raise ValueError(f"Invalid database driver! {v}. Must be one of {list(drivers)}")
+        return drivers[v.lower()]
+
+    
 
 

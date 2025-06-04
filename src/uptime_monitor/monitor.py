@@ -43,7 +43,7 @@ async def check_endpoint(session: aiohttp.ClientSession, endpoint: Endpoint, ema
     try:
         resp = await _safe_session(session, url, timeout)
         latency = perf_counter() - start
-        logger.info(f"Endpoint {endpoint.url} successfully checked")
+        logger.info("Endpoint check passed", extra={"endpoint": url, "latency": latency})
 
         return MonitorResult(
             endpoint_name=url,

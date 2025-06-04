@@ -21,21 +21,27 @@ async def handle_result(result: MonitorResult, monitor_config: MonitorConfig, em
     if not result.success:
         alert_subject = f"[OUTAGE ALERT] - {result.endpoint_name} is experiencing an outage"
         alert_msg = create_msg(result=result)
-        await send_email_alert(
-            message=alert_msg,
-            subject=alert_subject,
-            email_config=email_config
-        )
-        logger.info("Outage message sent!")
+        try:
+            await send_email_alert(
+                message=alert_msg,
+                subject=alert_subject,
+                email_config=email_config
+            )
+            logger.info("Outage message sent!")
+        except Exception as err:
+            logger.error(f"Critical: Outage e-mail could not be sent: {err}")
     elif result.latency >= monitor_config.latency_threshold:
         alert_subject = f"[LATENCY ALERT] - {result.endpoint_name} is experiencing latency"
         alert_msg = create_msg(result=result)
-        await send_email_alert(
-            message=alert_msg,
-            subject=alert_subject,
-            email_config=email_config
-        )
-        logger.info("Latency message sent!")
+        try:
+            await send_email_alert(
+                message=alert_msg,
+                subject=alert_subject,
+                email_config=email_config
+            )
+            logger.info("Latency message sent!")
+        except Exception as err:
+            logger.error(f"Critical: Latency e-mail could not be sent: {err}")
 
 @retry(
         reraise=True,
@@ -51,9 +57,11 @@ async def send_email_alert(message: str, subject: str, email_config: EmailConfig
     email_msg.set_content(message)
     
     try:
-        await aiosmtplib.send(
+        response = await aiosmtplib.send(
             email_msg, hostname=email_config.smtp_host, port=email_config.smtp_port
         )
+        if response[0].code != 250:
+            raise Exception("SMTP not accepted")
     except aiosmtplib.SMTPException as err:
         logger.exception("Failed to send the email")
 
