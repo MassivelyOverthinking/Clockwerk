@@ -21,5 +21,7 @@ async def scheduling_loop(monitor_config: MonitorConfig, email_config: EmailConf
             results = await asyncio.gather(*tasks)
             
             await asyncio.gather(*(handle_result(result, monitor_config, email_config) for result in results))
+            logger.info("All Endpoints have been checked and appropriate measures taken!")
             
             await asyncio.sleep(monitor_config.check_interval)
+            logger.info(f"Scheulding loo returning to sleep for {monitor_config.check_interval} seconds")

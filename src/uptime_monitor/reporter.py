@@ -5,7 +5,7 @@ import aiohttp
 import aiosmtplib
 
 from utils import create_msg
-from models import EmailConfig, MonitorConfig, LoggerConfig, MonitorResult
+from models import EmailConfig, MonitorConfig, MonitorResult
 from email.message import EmailMessage
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
@@ -26,6 +26,7 @@ async def handle_result(result: MonitorResult, monitor_config: MonitorConfig, em
             subject=alert_subject,
             email_config=email_config
         )
+        logger.info("Outage message sent!")
     elif result.latency >= monitor_config.latency_threshold:
         alert_subject = f"[LATENCY ALERT] - {result.endpoint_name} is experiencing latency"
         alert_msg = create_msg(result=result)
@@ -34,6 +35,7 @@ async def handle_result(result: MonitorResult, monitor_config: MonitorConfig, em
             subject=alert_subject,
             email_config=email_config
         )
+        logger.info("Latency message sent!")
 
 @retry(
         reraise=True,

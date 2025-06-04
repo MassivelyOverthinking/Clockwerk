@@ -30,7 +30,7 @@ async def _safe_session(session: aiohttp.ClientSession, url: str, timeout: int):
         return resp
 
 
-async def check_endpoint(session, endpoint: Endpoint, email_config: EmailConfig) -> MonitorResult:
+async def check_endpoint(session: aiohttp.ClientSession, endpoint: Endpoint, email_config: EmailConfig) -> MonitorResult:
     url = str(endpoint.url)
     timeout = endpoint.timeout
 
@@ -38,6 +38,7 @@ async def check_endpoint(session, endpoint: Endpoint, email_config: EmailConfig)
     try:
         resp = await _safe_session(session, url, timeout)
         latency = perf_counter() - start
+        logger.info(f"Endpoint {endpoint.url} successfully checked")
 
         return MonitorResult(
             endpoint_name=url,
