@@ -7,7 +7,7 @@ from aiohttp import ClientError, ClientTimeout
 
 from time import perf_counter
 from models import MonitorResult
-from models import EmailConfig, Endpoint, LoggerConfig
+from models import EmailConfig, Endpoint
 from logger import get_logger
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type, before_sleep_log
 
