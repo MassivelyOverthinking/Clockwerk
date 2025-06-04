@@ -37,3 +37,19 @@ def setup_logger(name: str, config: LoggerConfig) -> logging.Logger:
         logger.addHandler(file_handler)
 
     return logger
+
+
+#-------------------- Global Logging System --------------------
+
+_logger = None
+
+def get_logger() -> logging.Logger:
+    global _logger
+    if _logger is None:
+        config = LoggerConfig(
+            log_level="INFO",
+            log_file="monitor.log",
+            log_to_file=True  
+        )
+        _logger = setup_logger("MonitorSystem", config)
+    return _logger

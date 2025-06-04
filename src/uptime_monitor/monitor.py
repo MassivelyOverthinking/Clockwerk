@@ -8,18 +8,12 @@ from aiohttp import ClientError, ClientTimeout
 from time import perf_counter
 from models import MonitorResult
 from models import EmailConfig, Endpoint, LoggerConfig
-from logger import setup_logger
+from logger import get_logger
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type, before_sleep_log
 
 #-------------------- Logger Setup --------------------
 
-log_config = LoggerConfig(
-    log_level="INFO",
-    log_file="monitor.log",
-    log_to_file=True
-)
-
-logger = setup_logger(__name__, log_config)
+logger = get_logger()
 
 #-------------------- Monitor Function --------------------
 
@@ -54,7 +48,7 @@ async def check_endpoint(session, endpoint: Endpoint, email_config: EmailConfig)
         )
     except Exception as err:
         latency = perf_counter() - start
-        logger.info(f"Unexpected exception occured {err}")
+        logger.exception("Unexpected exception occured")
         return MonitorResult(
             endpoint_name=url,
             status_code=0,

@@ -9,17 +9,11 @@ from models import EmailConfig, MonitorConfig, LoggerConfig, MonitorResult
 from email.message import EmailMessage
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
-from logger import setup_logger
+from logger import get_logger
 
 #-------------------- Logger Setup --------------------
 
-log_config = LoggerConfig(
-    log_level="INFO",
-    log_file="monitor.log",
-    log_to_file=True
-)
-
-logger = setup_logger(__name__, log_config)
+logger = get_logger()
 
 #-------------------- Reporting Function --------------------
 
@@ -29,7 +23,8 @@ async def handle_result(result: MonitorResult, monitor_config: MonitorConfig, em
         alert_msg = create_msg(result=result)
         await send_email_alert(
             message=alert_msg,
-            subject=alert_subject
+            subject=alert_subject,
+            email_config=email_config
         )
     elif result.latency >= monitor_config.latency_threshold:
         alert_subject = f"[LATENCY ALERT] - {result.endpoint_name} is experiencing latency"
@@ -37,7 +32,7 @@ async def handle_result(result: MonitorResult, monitor_config: MonitorConfig, em
         await send_email_alert(
             message=alert_msg,
             subject=alert_subject,
-            config=email_config
+            email_config=email_config
         )
 
 @retry(
@@ -58,5 +53,5 @@ async def send_email_alert(message: str, subject: str, email_config: EmailConfig
             email_msg, hostname=email_config.smtp_host, port=email_config.smtp_port
         )
     except aiosmtplib.SMTPException as err:
-        logger.info(f"Failed to send the email: {err}")
+        logger.exception("Failed to send the email")
 

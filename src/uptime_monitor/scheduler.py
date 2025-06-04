@@ -6,17 +6,11 @@ import aiohttp
 from monitor import check_endpoint
 from reporter import handle_result
 from models import EmailConfig, MonitorConfig, LoggerConfig
-from logger import setup_logger
+from logger import get_logger
 
 #-------------------- Logger Setup --------------------
 
-log_config = LoggerConfig(
-    log_level="INFO",
-    log_file="monitor.log",
-    log_to_file=True
-)
-
-logger = setup_logger(__name__, log_config)
+logger = get_logger()
 
 #-------------------- Scheduler Function --------------------
 
