@@ -5,7 +5,7 @@ import aiohttp
 
 from monitor import check_endpoint
 from reporter import handle_result
-from models import EmailConfig, MonitorConfig, LoggerConfig
+from models import EmailConfig, MonitorConfig
 from logger import get_logger
 
 #-------------------- Logger Setup --------------------

@@ -44,6 +44,9 @@ def setup_logger(name: str, config: LoggerConfig) -> logging.Logger:
 _logger = None
 
 def get_logger() -> logging.Logger:
+    """
+    Returns the Global logger-object defined by the setup_logger configuration
+    """
     global _logger
     if _logger is None:
         config = LoggerConfig(

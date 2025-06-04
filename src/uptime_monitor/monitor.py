@@ -31,10 +31,15 @@ async def _safe_session(session: aiohttp.ClientSession, url: str, timeout: int):
 
 
 async def check_endpoint(session: aiohttp.ClientSession, endpoint: Endpoint, email_config: EmailConfig) -> MonitorResult:
+    """
+    Asynchronous function to monitor API Endpoint.
+    Checks the specified Endpoint for general issues such as Outage and Latency.
+    """
+    
     url = str(endpoint.url)
     timeout = endpoint.timeout
-
     start = perf_counter()
+
     try:
         resp = await _safe_session(session, url, timeout)
         latency = perf_counter() - start
