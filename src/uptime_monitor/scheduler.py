@@ -3,12 +3,12 @@
 import asyncio
 import aiohttp
 
-from monitor import check_endpoint
-from reporter import handle_result
-from config.config_models import EmailConfig, MonitorConfig, DatabaseConfig
-from logger import get_logger
+from src.uptime_monitor.monitor import check_endpoint
+from src.uptime_monitor.reporter import handle_result
+from src.uptime_monitor.config.config_models import EmailConfig, MonitorConfig, DatabaseConfig
+from src.uptime_monitor.logger import get_logger
 
-from database.db_connection import shutdown_engine
+from src.uptime_monitor.database.db_connection import shutdown_engine
 
 #-------------------- Logger Setup --------------------
 

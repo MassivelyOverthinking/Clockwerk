@@ -1,5 +1,5 @@
+import pytest_asyncio
 import pytest
-import asyncio
 from aiohttp import ClientSession
 from src.uptime_monitor.models import Endpoint
 from src.uptime_monitor.monitor import check_endpoint
@@ -15,7 +15,7 @@ async def test_check_endpoint_success():
     config = EmailConfig(
         smtp_host="smtp.mailtrap.io",
         smtp_port=587,
-        email_from="test@example.com",
+        email_from="noreply@example.com",
         email_to="HysingerDev@gmail.com"
     )
     

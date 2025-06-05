@@ -5,7 +5,7 @@ from typing import Optional, AsyncGenerator
 from sqlalchemy import URL
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, AsyncEngine
-from database.schemas import Base
+from src.uptime_monitor.database.schemas import Base
 from contextlib import asynccontextmanager
 from src.uptime_monitor.models import DatabaseConfig
 

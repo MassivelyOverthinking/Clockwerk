@@ -4,10 +4,10 @@ import asyncio
 import aiohttp
 import aiosmtplib
 
-from utils.common import create_msg
-from utils.database_utils import write_to_db
-from models import MonitorResult
-from config.config_models import EmailConfig, MonitorConfig, DatabaseConfig
+from src.uptime_monitor.utils.common import create_msg
+from src.uptime_monitor.utils.database_utils import write_to_db
+from src.uptime_monitor.models import MonitorResult
+from src.uptime_monitor.config.config_models import EmailConfig, MonitorConfig, DatabaseConfig
 from email.message import EmailMessage
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
@@ -59,7 +59,7 @@ async def handle_result(
         reraise=True,
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=1, max=10),
-        retry=retry_if_exception_type(aiosmtplib.SMTPException)
+        retry=retry_if_exception_type((aiosmtplib.SMTPException))
 )
 async def send_email_alert(message: str, subject: str, email_config: EmailConfig):
     email_msg = EmailMessage()

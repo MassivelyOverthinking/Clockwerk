@@ -3,12 +3,12 @@
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
-from models import MonitorResult, DatabaseConfig
-from database.db_connection import get_session
-from database.schemas import MonitorHistory
-from common import update_endpoint
+from src.uptime_monitor.models import MonitorResult, DatabaseConfig
+from src.uptime_monitor.database.db_connection import get_session
+from src.uptime_monitor.database.schemas import MonitorHistory
+from src.uptime_monitor.utils.common import update_endpoint
 
-from logger import get_logger
+from src.uptime_monitor.logger import get_logger
 
 #-------------------- Logger Setup --------------------
 

@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field, AnyHttpUrl
 
 class MonitorResult(BaseModel):
     endpoint_name: Optional[str] = None
-    timestamp: datetime = Field(default_factory=datetime.now())
+    timestamp: datetime = Field(default_factory=datetime.now)
     status_code: Optional[int] = 0
     latency: Optional[float] = None
     success: bool = False

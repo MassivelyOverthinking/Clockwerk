@@ -6,9 +6,9 @@ import logging
 from aiohttp import ClientError, ClientTimeout
 
 from time import perf_counter
-from models import MonitorResult, Endpoint
-from config.config_models import EmailConfig
-from logger import get_logger
+from src.uptime_monitor.models import MonitorResult, Endpoint
+from src.uptime_monitor.config.config_models import EmailConfig
+from src.uptime_monitor.logger import get_logger
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type, before_sleep_log
 
 #-------------------- Logger Setup --------------------
@@ -21,7 +21,7 @@ logger = get_logger()
         reraise=True,
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=1, max=10),
-        retry=retry_if_exception_type(ClientError, asyncio.TimeoutError),
+        retry=retry_if_exception_type((ClientError, asyncio.TimeoutError)),
         before_sleep=before_sleep_log(logger, logging.WARNING)
 )
 async def _safe_session(session: aiohttp.ClientSession, url: str, timeout: int):

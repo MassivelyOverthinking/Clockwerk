@@ -3,7 +3,7 @@
 import logging
 
 from logging.handlers import RotatingFileHandler
-from config.config_models import LoggerConfig
+from src.uptime_monitor.config.config_models import LoggerConfig
 
 #-------------------- Logging Configuration --------------------
 
