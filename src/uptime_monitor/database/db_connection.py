@@ -1,12 +1,12 @@
 #-------------------- Imports --------------------
 
 from typing import Optional, AsyncGenerator
-
+from contextlib import asynccontextmanager
 from sqlalchemy import URL
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, AsyncEngine
+
 from src.uptime_monitor.database.schemas import Base
-from contextlib import asynccontextmanager
 from src.uptime_monitor.config.config_models import DatabaseConfig
 
 #-------------------- Global Variables --------------------

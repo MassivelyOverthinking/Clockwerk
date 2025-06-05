@@ -1,16 +1,14 @@
 #-------------------- Imports --------------------
 
-import asyncio
-import aiohttp
 import aiosmtplib
+
+from email.message import EmailMessage
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 from src.uptime_monitor.utils.common import create_msg
 from src.uptime_monitor.utils.database_utils import write_to_db
 from src.uptime_monitor.models import MonitorResult
 from src.uptime_monitor.config.config_models import EmailConfig, MonitorConfig, DatabaseConfig
-from email.message import EmailMessage
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
-
 from src.uptime_monitor.logger import get_logger
 
 #-------------------- Logger Setup --------------------
@@ -25,6 +23,10 @@ async def handle_result(
         email_config: EmailConfig,
         db_config: DatabaseConfig
     ):
+    """
+    Summary:
+    Asynchronous mehtod that 
+    """
 
     # Step 1: Write to DB is activation is enabled
     if db_config.db_activation:

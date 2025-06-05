@@ -3,13 +3,14 @@
 import asyncio
 import aiohttp
 import logging
-from aiohttp import ClientError, ClientTimeout
 
+from aiohttp import ClientError, ClientTimeout
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type, before_sleep_log
 from time import perf_counter
+
 from src.uptime_monitor.models import MonitorResult, Endpoint
 from src.uptime_monitor.config.config_models import EmailConfig
 from src.uptime_monitor.logger import get_logger
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type, before_sleep_log
 
 #-------------------- Logger Setup --------------------
 
@@ -32,8 +33,24 @@ async def _safe_session(session: aiohttp.ClientSession, url: str, timeout: int):
 
 async def check_endpoint(session: aiohttp.ClientSession, endpoint: Endpoint, email_config: EmailConfig) -> MonitorResult:
     """
-    Asynchronous function to monitor API Endpoint.
-    Checks the specified Endpoint for general issues such as Outage and Latency.
+    Summary:
+    Sends an asynchronous request o a specified endpoint and records the ensuing result
+
+    Description:
+    - Initiates an aiohttp Client Session and makes initial request
+    - Handles the response appropirately based on status code / latency
+    - Produces a MonitorResult-object with relevant endpoint information
+
+    Args:
+        session (aiohttp.ClientSession): The HTTP Session used to perform the request
+        endpoint (Endpoint): The target endpoint, including URL, timeout and alert settings
+        email_config (EmailConfig): Configuration model containing SMTP Host, SMTP Port, recieving E-mail and sending E-mail
+
+    Returns:
+        MonitorResult: Model containing relevant information regarding the last endpoint check
+
+    Raises:
+        Exception: Raised if the request fails in a way not handled by Retry logic
     """
     
     url = str(endpoint.url)

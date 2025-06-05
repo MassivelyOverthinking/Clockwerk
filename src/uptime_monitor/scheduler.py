@@ -6,9 +6,8 @@ import aiohttp
 from src.uptime_monitor.monitor import check_endpoint
 from src.uptime_monitor.reporter import handle_result
 from src.uptime_monitor.config.config_models import EmailConfig, MonitorConfig, DatabaseConfig
-from src.uptime_monitor.logger import get_logger
-
 from src.uptime_monitor.database.db_connection import shutdown_engine
+from src.uptime_monitor.logger import get_logger
 
 #-------------------- Logger Setup --------------------
 
@@ -17,6 +16,29 @@ logger = get_logger()
 #-------------------- Scheduler Function --------------------
 
 async def scheduling_loop(monitor_config: MonitorConfig, email_config: EmailConfig, db_config: DatabaseConfig):
+    """
+    Summary:
+    Runs an asynchronous monitoring loop that periodically checks endpoints and handles results.
+    
+    Description:
+    - Iterates over all endpoints in the monitor configuration,
+    - Checks each endpoint asynchronously,
+    - Handles results including alerts and database updates,
+    - Waits for the configured interval before repeating,
+    - Cleans up resources, including shutting down the database engine on cancellation.
+
+    Args:
+        monitor_config (MonitorConfig): Configuration model containing Endpoints list, check interval & latency threshold
+        email_config (EmailConfig): Configuration model containing SMTP Host, SMTP Port, recieving E-mail and sending E-mail
+        db_config (DatabaseConfig): Configuration model containing available drivers, DB activation flag, and other DB config variables
+
+    Returns:
+        None
+
+    Raises:
+        Asyncio.CancelledError: Raised when the loop is cancelled, initiating cleanup
+
+    """
     try:
         async with aiohttp.ClientSession() as session:
             while True:

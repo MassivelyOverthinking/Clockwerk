@@ -1,8 +1,12 @@
-from typing import Optional, Literal
-from typing import List
+#-------------------- Imports --------------------
+
+from typing import Optional, Literal, List
 from enum import Enum
 from pydantic import BaseModel, Field, field_validator, EmailStr
+
 from src.uptime_monitor.models import Endpoint
+
+#-------------------- Config Models --------------------
 
 class LoggerConfig(BaseModel):
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"

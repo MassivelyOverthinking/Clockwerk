@@ -1,6 +1,7 @@
 #-------------------- Imports --------------------
 
 import json
+
 from datetime import datetime, timezone
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -8,7 +9,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.uptime_monitor.models import MonitorResult
 from src.uptime_monitor.database.db_connection import get_session
 from src.uptime_monitor.database.schemas import EndpointStatus
-
 from src.uptime_monitor.logger import get_logger
 
 #-------------------- Logger Setup --------------------
