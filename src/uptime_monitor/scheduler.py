@@ -31,7 +31,6 @@ async def scheduling_loop(monitor_config: MonitorConfig, email_config: EmailConf
     except asyncio.CancelledError:
         logger.info(f"Scheduling loop is shutting down...")
     finally:
-        for task in asyncio.all_tasks():
-            task.cancel()
         if db_config.db_activation:
             await shutdown_engine()
+        logger.info(f"Scheduling loop cleanup is complete")

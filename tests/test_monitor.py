@@ -9,7 +9,7 @@ from src.uptime_monitor.config.config_models import EmailConfig
 async def test_check_endpoint_success():
     endpoint = Endpoint(
         url="https://httpbin.org/status/200",
-        timeout=3, 
+        timeout=20, 
         alert_threshold=3
     )
     config = EmailConfig(

@@ -11,7 +11,7 @@ from src.uptime_monitor.config.config_models import EmailConfig, MonitorConfig, 
 from email.message import EmailMessage
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
-from logger import get_logger
+from src.uptime_monitor.logger import get_logger
 
 #-------------------- Logger Setup --------------------
 

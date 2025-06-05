@@ -17,7 +17,7 @@ class EndpointStatus(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     url: Mapped[str] = mapped_column(String(2083), unique=True, nullable=False)
     current_status: Mapped[str] = mapped_column(String(50), nullable=False)
-    last_updated: Mapped[datetime] = mapped_column(default_factory=lambda: datetime.now(timezone.utc))
+    last_updated: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
 
 
 class MonitorHistory(Base):
@@ -25,7 +25,7 @@ class MonitorHistory(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     url: Mapped[str] = mapped_column(String(2083), nullable=False)
-    timestamp: Mapped[datetime] = mapped_column(default_factory=lambda: datetime.now(timezone.utc))
+    timestamp: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
     status_code: Mapped[int] = mapped_column(nullable=False)
     latency: Mapped[float] = mapped_column(nullable=False)
     success: Mapped[bool] = mapped_column(default=True)

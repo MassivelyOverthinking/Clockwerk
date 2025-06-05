@@ -7,12 +7,12 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, AsyncEngine
 from src.uptime_monitor.database.schemas import Base
 from contextlib import asynccontextmanager
-from src.uptime_monitor.models import DatabaseConfig
+from src.uptime_monitor.config.config_models import DatabaseConfig
 
 #-------------------- Global Variables --------------------
 
-_engine = Optional[AsyncEngine] = None
-_sessionmaker = Optional[sessionmaker[AsyncSession]] = None
+_engine: Optional[AsyncEngine] = None
+_sessionmaker: Optional[sessionmaker[AsyncSession]] = None
 
 #-------------------- Configuration & Initialization --------------------
 
