@@ -8,7 +8,16 @@ __author__ = "HysingerDev"
 
 #-------------------- Lazy Loading Modules --------------------
 
-_lazy_modules = []
+_lazy_modules = [
+    "config",
+    "database",
+    "utils",
+    "logger",
+    "models",
+    "monitor",
+    "reporter",
+    "scheduler"
+]
 
 def __getattr__(name):
     if name in _lazy_modules:
