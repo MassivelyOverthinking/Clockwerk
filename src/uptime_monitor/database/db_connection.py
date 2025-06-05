@@ -5,6 +5,7 @@ from typing import Optional, AsyncGenerator
 from sqlalchemy import URL
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, AsyncEngine
+from database.schemas import Base
 from contextlib import asynccontextmanager
 from src.uptime_monitor.models import DatabaseConfig
 
@@ -15,7 +16,7 @@ _sessionmaker = Optional[sessionmaker[AsyncSession]] = None
 
 #-------------------- Configuration & Initialization --------------------
 
-def init_database(config: DatabaseConfig):
+async def init_database(config: DatabaseConfig):
     """
     Initialize database engine and session factory if database is activated.
     Call this once at app startup.
@@ -38,6 +39,11 @@ def init_database(config: DatabaseConfig):
     _engine = create_async_engine(db_url, echo=config.echo_mode)
     _sessionmaker = sessionmaker(bind=_engine, class_=AsyncSession, expire_on_commit=True)
 
+    # Create tables
+    async with _engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+
 
 #-------------------- AsyncSession Access --------------------
 
@@ -48,7 +54,7 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
     Usage: async with get_session() as session:
     """
     if _sessionmaker is None:
-        raise RuntimeError("Database not initialized. Call init_databse() first")
+        raise RuntimeError("Database not initialized. Call init_database() first")
     
     async with _sessionmaker() as session:
         yield session

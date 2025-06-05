@@ -5,7 +5,7 @@ import aiohttp
 
 from monitor import check_endpoint
 from reporter import handle_result
-from models import EmailConfig, MonitorConfig, DatabaseConfig
+from config.config_models import EmailConfig, MonitorConfig, DatabaseConfig
 from logger import get_logger
 
 from database.db_connection import shutdown_engine
@@ -31,5 +31,7 @@ async def scheduling_loop(monitor_config: MonitorConfig, email_config: EmailConf
     except asyncio.CancelledError:
         logger.info(f"Scheduling loop is shutting down...")
     finally:
+        for task in asyncio.all_tasks():
+            task.cancel()
         if db_config.db_activation:
             await shutdown_engine()

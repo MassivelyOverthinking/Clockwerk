@@ -6,8 +6,8 @@ import logging
 from aiohttp import ClientError, ClientTimeout
 
 from time import perf_counter
-from models import MonitorResult
-from models import EmailConfig, Endpoint
+from models import MonitorResult, Endpoint
+from config.config_models import EmailConfig
 from logger import get_logger
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type, before_sleep_log
 
@@ -43,7 +43,7 @@ async def check_endpoint(session: aiohttp.ClientSession, endpoint: Endpoint, ema
     try:
         resp = await _safe_session(session, url, timeout)
         latency = perf_counter() - start
-        logger.info("Endpoint check passed", extra={"endpoint": url, "latency": latency})
+        logger.info(f"Endpoint check passed: {url} with {latency:.2f}s latency")
 
         return MonitorResult(
             endpoint_name=url,

@@ -4,8 +4,10 @@ import asyncio
 import aiohttp
 import aiosmtplib
 
-from utils import create_msg, write_to_db
-from models import EmailConfig, MonitorConfig, MonitorResult, DatabaseConfig
+from utils.common import create_msg
+from utils.database_utils import write_to_db
+from models import MonitorResult
+from config.config_models import EmailConfig, MonitorConfig, DatabaseConfig
 from email.message import EmailMessage
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
@@ -26,7 +28,7 @@ async def handle_result(
 
     # Step 1: Write to DB is activation is enabled
     if db_config.db_activation:
-        write_to_db(result, db_config)
+        await write_to_db(result, db_config)
 
     # Step 2: Write the appopriate Alert messages
 
@@ -73,5 +75,5 @@ async def send_email_alert(message: str, subject: str, email_config: EmailConfig
         if response[0].code != 250:
             raise Exception("SMTP not accepted")
     except aiosmtplib.SMTPException as err:
-        logger.exception("Failed to send the email")
+        logger.exception(f"Failed to send the email: {err}")
 

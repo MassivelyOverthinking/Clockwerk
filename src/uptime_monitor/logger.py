@@ -3,7 +3,7 @@
 import logging
 
 from logging.handlers import RotatingFileHandler
-from models import LoggerConfig
+from config.config_models import LoggerConfig
 
 #-------------------- Logging Configuration --------------------
 
