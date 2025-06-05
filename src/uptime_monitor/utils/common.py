@@ -5,11 +5,11 @@ from datetime import datetime, timezone
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models import MonitorResult
+from src.uptime_monitor.models import MonitorResult
 from database.db_connection import get_session
 from database.schemas import EndpointStatus
 
-from logger import get_logger
+from src.uptime_monitor.logger import get_logger
 
 #-------------------- Logger Setup --------------------
 

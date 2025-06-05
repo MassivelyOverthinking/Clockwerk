@@ -36,7 +36,12 @@ async def init_database(config: DatabaseConfig):
         port=config.db_port
     )
 
-    _engine = create_async_engine(db_url, echo=config.echo_mode)
+    _engine = create_async_engine(
+        db_url,
+        echo=config.echo_mode,
+        pool_size=5,
+        max_overflow=10
+    )
     _sessionmaker = sessionmaker(bind=_engine, class_=AsyncSession, expire_on_commit=True)
 
     # Create tables
