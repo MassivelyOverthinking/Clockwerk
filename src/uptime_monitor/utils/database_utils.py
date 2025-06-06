@@ -1,11 +1,10 @@
 #-------------------- Imports --------------------
 
-from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from src.uptime_monitor.models import MonitorResult
-from src.uptime_monitor.config.config_models import DatabaseConfig
-from src.uptime_monitor.database.db_connection import get_session
+from src.uptime_monitor.database.async_connection import get_session
 from src.uptime_monitor.database.schemas import MonitorHistory
 from src.uptime_monitor.utils.common import update_endpoint
 from src.uptime_monitor.logger import get_logger
@@ -16,8 +15,8 @@ logger = get_logger()
 
 #-------------------- Utility Functions --------------------
 
-async def write_to_db(result: MonitorResult, config: DatabaseConfig):
-    async with get_session() as session:
+async def write_to_db(result: MonitorResult, sessionmaker: async_sessionmaker):
+    async with get_session(sessionmaker) as session:
         try:
             history_entry = MonitorHistory(
                 url=result.endpoint_name,
@@ -32,6 +31,8 @@ async def write_to_db(result: MonitorResult, config: DatabaseConfig):
             session.add(endpoint_status)
 
             await session.commit()
-
         except SQLAlchemyError as err:
+            await session.rollback()
             logger.exception(f"Database operation failed: {err}")
+        finally:
+            await session.close()

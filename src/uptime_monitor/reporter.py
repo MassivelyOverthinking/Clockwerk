@@ -4,6 +4,8 @@ import aiosmtplib
 
 from email.message import EmailMessage
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+from typing import Optional
+from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from src.uptime_monitor.utils.common import create_msg
 from src.uptime_monitor.utils.database_utils import write_to_db
@@ -21,7 +23,8 @@ async def handle_result(
         result: MonitorResult,
         monitor_config: MonitorConfig,
         email_config: EmailConfig,
-        db_config: DatabaseConfig
+        db_config: DatabaseConfig,
+        sessionmaker: Optional[async_sessionmaker] = None
     ):
     """
     Summary:
@@ -47,8 +50,8 @@ async def handle_result(
     """
 
     # Step 1: Write to DB is activation is enabled
-    if db_config.db_activation:
-        await write_to_db(result, db_config)
+    if db_config.db_activation and sessionmaker:
+        await write_to_db(result, sessionmaker)
 
     # Step 2: Write the appopriate Alert messages
 

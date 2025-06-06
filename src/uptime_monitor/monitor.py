@@ -31,7 +31,11 @@ async def _safe_session(session: aiohttp.ClientSession, url: str, timeout: int):
         return resp
 
 
-async def check_endpoint(session: aiohttp.ClientSession, endpoint: Endpoint, email_config: EmailConfig) -> MonitorResult:
+async def check_endpoint(
+        session: aiohttp.ClientSession,
+        endpoint: Endpoint,
+        email_config: EmailConfig
+    ) -> MonitorResult:
     """
     Summary:
     Sends an asynchronous request to a specified endpoint and records the ensuing result

@@ -6,7 +6,7 @@ import aiohttp
 from src.uptime_monitor.monitor import check_endpoint
 from src.uptime_monitor.reporter import handle_result
 from src.uptime_monitor.config.config_models import EmailConfig, MonitorConfig, DatabaseConfig
-from src.uptime_monitor.database.db_connection import shutdown_engine
+from src.uptime_monitor.database.async_connection import init_database
 from src.uptime_monitor.logger import get_logger
 
 #-------------------- Logger Setup --------------------
@@ -39,13 +39,26 @@ async def scheduling_loop(monitor_config: MonitorConfig, email_config: EmailConf
         Asyncio.CancelledError: Raised when the loop is cancelled, initiating cleanup
 
     """
+
+    engine = None
+    sessionmaker = None
+
+    if db_config.db_activation:
+        sessionmaker, engine = await init_database(db_config)
+
     try:
         async with aiohttp.ClientSession() as session:
             while True:
-                tasks = [check_endpoint(session=session, endpoint=ep, email_config=email_config) for ep in monitor_config.endpoints]
+                tasks = [
+                    check_endpoint(session=session, endpoint=ep, email_config=email_config)
+                    for ep in monitor_config.endpoints
+                ]
                 results = await asyncio.gather(*tasks, return_exceptions=True)
                 
-                await asyncio.gather(*(handle_result(result, monitor_config, email_config, db_config) for result in results))
+                await asyncio.gather(*(
+                    handle_result(result, monitor_config, email_config, db_config, sessionmaker)
+                    for result in results
+                ))
                 logger.info("All Endpoints have been checked and appropriate measures taken!")
                 
                 await asyncio.sleep(monitor_config.check_interval)
@@ -53,6 +66,6 @@ async def scheduling_loop(monitor_config: MonitorConfig, email_config: EmailConf
     except asyncio.CancelledError:
         logger.info(f"Scheduling loop is shutting down...")
     finally:
-        if db_config.db_activation:
-            await shutdown_engine()
+        if engine:
+            await engine.dispose()
         logger.info(f"Scheduling loop cleanup is complete")
