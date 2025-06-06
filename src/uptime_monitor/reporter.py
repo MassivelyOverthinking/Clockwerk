@@ -25,7 +25,25 @@ async def handle_result(
     ):
     """
     Summary:
-    Asynchronous mehtod that 
+    Reports the monitoring result to the specified e-mail outlet and database
+
+    Description:
+    - Recieves a MonitorResult-object from individual endpoints
+    - Writes the appropriate information to DB (Requires DB-connection enabled)
+    - Formulates a standardized alert message based on status-response or latency
+    - Raises an e-mail alert to the appropriate outlet.
+
+    Args:
+        result (MonitorResult): MonitorResult-object used for creating e-mail response
+        monitor_config (MonitorConfig): Configuration model containing Endpoints list, check interval & latency threshold
+        email_config (EmailConfig): Configuration model containing SMTP Host, SMTP Port, recieving E-mail and sending E-mail
+        db_config (DatabaseConfig): Configuration model containing available drivers, DB activation flag, and other DB config variables
+
+    Returns:
+        None
+
+    Raises:
+        Exception: Raised if the e-mail alert was not succesfully sent.
     """
 
     # Step 1: Write to DB is activation is enabled

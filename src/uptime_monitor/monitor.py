@@ -34,7 +34,7 @@ async def _safe_session(session: aiohttp.ClientSession, url: str, timeout: int):
 async def check_endpoint(session: aiohttp.ClientSession, endpoint: Endpoint, email_config: EmailConfig) -> MonitorResult:
     """
     Summary:
-    Sends an asynchronous request o a specified endpoint and records the ensuing result
+    Sends an asynchronous request to a specified endpoint and records the ensuing result
 
     Description:
     - Initiates an aiohttp Client Session and makes initial request
@@ -52,7 +52,6 @@ async def check_endpoint(session: aiohttp.ClientSession, endpoint: Endpoint, ema
     Raises:
         Exception: Raised if the request fails in a way not handled by Retry logic
     """
-    
     url = str(endpoint.url)
     timeout = endpoint.timeout
     start = perf_counter()
