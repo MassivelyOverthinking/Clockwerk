@@ -11,7 +11,26 @@ from src.uptime_monitor.config.config_models import DatabaseConfig
 #-------------------- Asynchronous DB --------------------
 
 async def init_database(config: DatabaseConfig) -> Tuple[async_sessionmaker, AsyncEngine]:
+    """
+    Summary:
+        Function used to initialize database connection and creation of schemas.
+
+    Description:
+    - Utilises DatabaseConfig-object to enable database connection, if enabled.
+    - Produces final database connection string and uses it create SQLalchemy engine.
+    - Engine produces an asynchronous sessionmaker-object passed to subsequent functions.
+    - Both engine and sessionmaker objects are passed down through the layers.
+
+    Args:
+        config (DatabaseConfig): Configuration model providing the necessary information to initiate database connection.
     
+    Returns:
+        sessionmaker (async_sessionmaker): SQLalchemy's asynchronous sessionmaker used to create DB sessions.
+        engine (AsyncEngine): Asynchronous database engine handling the connection pool.
+
+    Raises:
+        None
+    """
     db_url = URL.create(
         drivername=config.driver_name,
         host=config.db_host_name,
@@ -36,5 +55,21 @@ async def init_database(config: DatabaseConfig) -> Tuple[async_sessionmaker, Asy
 
 @asynccontextmanager
 async def get_session(sessionmaker: async_sessionmaker):
+    """
+    Summary:
+        An asynchronous generator-function used to provide sessions for database queries.
+
+    Description:
+    - Utilises a With statemtent to safely construct and close async DB sessions.
+
+    Args:
+        sessionmaker (async_sessionmaker): Used by the generator function to provide multiple async DB session.
+
+    Returns (Yields):
+        session: SQLalchemy's asynchronous session object used for database querying.
+
+    Raises:
+        None
+    """
     async with sessionmaker() as session:
         yield session

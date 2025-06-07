@@ -16,6 +16,26 @@ logger = get_logger()
 #-------------------- Utility Functions --------------------
 
 async def write_to_db(result: MonitorResult, sessionmaker: async_sessionmaker):
+    """
+    Summary:
+        Writes the specified result-object to database
+
+    Description:
+    - Recives MonitorResult-object and sessionmaker.
+    - Utilises sessionmaker-object to instantialize an async database session.
+    - Waits for the resulting information to be commited to database.
+    - Handles cleanup of the asynnchronous database session.
+
+    Args:
+        result (MonitorResult): Model containing relevant information regarding the last endpoint check.
+        sessionmaker (async_sessionmaker): Asynchronous sessionmaker used for providing a SQLalchemy session. 
+
+    Raises:
+        SQLalchemyError: Raised if session was unsuccessfull in wiritng result to database.
+
+    Returns:
+        None
+    """
     async with get_session(sessionmaker) as session:
         try:
             history_entry = MonitorHistory(

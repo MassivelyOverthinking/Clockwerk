@@ -21,10 +21,11 @@ async def scheduling_loop(monitor_config: MonitorConfig, email_config: EmailConf
     Runs an asynchronous monitoring loop that periodically checks endpoints and handles results.
     
     Description:
-    - Iterates over all endpoints in the monitor configuration,
-    - Checks each endpoint asynchronously,
-    - Handles results including alerts and database updates,
-    - Waits for the configured interval before repeating,
+    - Initializes DB if enabled by user.
+    - Iterates over all endpoints in the monitor configuration.
+    - Checks each endpoint asynchronously.
+    - Handles results including alerts and database updates.
+    - Waits for the configured interval before repeating.
     - Cleans up resources, including shutting down the database engine on cancellation.
 
     Args:

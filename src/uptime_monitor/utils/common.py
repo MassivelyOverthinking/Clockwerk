@@ -17,6 +17,24 @@ logger = get_logger()
 #-------------------- Utility Functions --------------------
 
 def create_msg(result: MonitorResult) -> str:
+    """
+    Summary:
+        Formulates and passes the appropriate alert message based on recieved result.
+
+    Description:
+    - Recieves the appropriate information necessary to craft informative message.
+    - Creates an informative alert message in JSON format.
+    - Parses the JSON information into a single-string format ready to send.
+    
+    Args:
+        result (MonitorResult): Model containing the relevant information used to craft alert message.
+
+    Returns:
+        str: Returns a single-line String-object appropriate for message sending.
+
+    Raises:
+        None
+    """
     alert_msg = {
         "Endpoint": result.endpoint_name,
         "Timestamp": str(result.timestamp),
