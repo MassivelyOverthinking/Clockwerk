@@ -11,14 +11,19 @@ from src.uptime_monitor.models import Endpoint
 class LoggerConfig(BaseModel):
     """
     Summary:
-        Configuration model allowing for dynamic logging setup and handling.
+        Configuration model for loggin information in the monitoring application.
      
     Attributes:
-        log_level (Literal[str]): Defaults to 'INFO'.
-        log_file (str): File path for the specified logging file. Default to 'Monitor.log'.
-        log_to_fiel (bool): Determines whether to enable logging information to a file. Defaults to True.
-        log_format (str): ASCII formatted string determining the logging information format.
-        date_format (str): Used to determine how the logging module handles date formats.
+        log_level (Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]): 
+            Minimum severity level of log messages to capture. Defaults to 'INFO'.
+        log_file (str): 
+            Path to the log file where logs are stored. Default to 'Monitor.log'.
+        log_to_fiel (bool): 
+            Determines if the log should write to file. Defaults to True.
+        log_format (str):
+            Format strings for log messages.
+        date_format (str): 
+            Format strings for timestamps in log messages.
     """
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"
     log_file: str = Field(default="monitor.log")
@@ -30,12 +35,17 @@ class LoggerConfig(BaseModel):
 class EmailConfig(BaseModel):
     """
     Summary:
+        Configuration model for email settings.
     
     Attributes:
         smtp_host (str):
+            Hostname of the SMTP server used to send emails.
         smtp_port (int):
+            Port number fo the SMTP server. Must be between 1 - 65535. Defaults to 587.
         email_from (EmailStr):
+            Sender's email address used in alert messages.
         email_to (EmailStr):
+            Recipient's email address used to receive alert notifications.
     """
     smtp_host: str = Field(default="smtp.mailtrap.io")
     smtp_port: int = Field(default=587, ge=1, le=65535)
@@ -46,11 +56,15 @@ class EmailConfig(BaseModel):
 class MonitorConfig(BaseModel):
     """
     Summary:
+        Configuration model for uptime and latency monitoring settings.
     
     Attributes:
         endpoints (List[Ednpoint]):
+            List of Endpoint objects to be monitored.
         check_interval (int):
+            Interval in seconds between endpoint checks. Must be at least 5 seconds. Defaults to 60.
         latency_threshold (float):
+            Maximum latency in seconds before triggering an alert notification. Defaults to 1.5.
     """
     endpoints: List[Endpoint] = Field(default_factory=list)
     check_interval: int = Field(default=60, ge=5, description="Interval between Uptime checks")
@@ -62,10 +76,10 @@ class SupportedDrivers(str, Enum):
     Summary:
         Database drivers currently supported for connectivity and querying (ENUM).
     
-    Enums:
-        mysql: Determines the appropriate driver string for MySQL database.
-        postgresql: Determines the appropriate driver string for Postgresql database.
-        sqlite: Determines the appropriate driver string for SQLite database.
+    Enum Members:
+        mysql: MySQL driver using mysqlconnector.
+        postgresql: Postgressql driver using asyncpg.
+        sqlite: SQLite driver using aiosqlite.
     """
     mysql = "mysql+mysqlconnector"
     postgresql = "postgresql+asyncpg"
@@ -75,17 +89,25 @@ class SupportedDrivers(str, Enum):
 class DatabaseConfig(BaseModel):
     """
     Summary:
-        Configuration model used to dynamically establish database connections. 
+        Configuration model for database connection settings.
 
     Attributes:
-        driver_name (SuppertedDrivers): The specified database driver used to establish initial connection.
-        db_host_name (Optional[str]): Optinonal host name indetifying the desired database currently utilised.
-        db_username (Optional[str]): Username associated with the appropriate database, allowing access to its functionalities.
-        db_name (Optional[str]): The current identifying name userd by the database.
-        db_password (Optional[str]): Optional password-string used to grant safe access to database functionalities.
-        db_port (Optional[int]): Integer variable identifying the current port number used by the database. Defaults to 5437.
-        db_activation (bool): Determine whether or not to enable database querying and information storage.
-        echo_mode (bool): Whether or not current database enables 'Echo', a debugging tool. 
+        driver_name (SuppertedDrivers): 
+            The database driver to use for establishing a connection.
+        db_host_name (Optional[str]): 
+            Hostname or IP address of the database server.
+        db_username (Optional[str]): 
+            Username for authentication within the database.
+        db_name (Optional[str]): 
+            Current identifying name of the database to connect to.
+        db_password (Optional[str]): 
+            Database user's personal password.
+        db_port (Optional[int]): 
+            Port number on which the database is listening. Defaults to 5437.
+        db_activation (bool): 
+            If True, enables database interaction and functionality.
+        echo_mode (bool): 
+            If True, enables sqlalchemy's echo moder for verbose query logging (Debugging Tool).
     """
     driver_name: SupportedDrivers
     db_host_name: Optional[str] = None

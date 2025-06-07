@@ -12,20 +12,46 @@ authors = [
     {name = "HysingerDev", email = "HysingerDev@gmail.com"}
 ]
 requires-python = ">=3.8"
+
 keywords = [
     "API",
     "async",
     "uptime",
-    "security",
-    "troubleshooting",
-    "python"
+    "monitoring",
+    "python",
+    "latency",
+    "alerts",
+    "endpoints"
 ]
+
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Programming Languages :: Pythonn :: 3.10"
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
-    "Topic :: Security :: Cryptography",
-    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: Monitoring",
+    "Topic :: System :: Networking :: Monitoring",
     "Intended Audience :: Developers"
 ]
-dependencies = []
+
+dependencies = [
+    "pydantic>=2.0",
+    "pydantic[email]",
+    "aiohttp>=3.8",
+    "sqlalchemy[asyncio]>=2.0",
+    "asyncpg>=0.28",
+    "aiosqlite>=0.19",
+    "mysql-connector-python>=8.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio"
+]
+
+[project.urls]
+Homepage = ""
+Documentation = ""
+Source = ""
+Issues = ""

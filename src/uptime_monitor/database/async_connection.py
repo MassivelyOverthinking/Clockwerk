@@ -57,16 +57,20 @@ async def init_database(config: DatabaseConfig) -> Tuple[async_sessionmaker, Asy
 async def get_session(sessionmaker: async_sessionmaker):
     """
     Summary:
-        An asynchronous generator-function used to provide sessions for database queries.
+        Asynchronous context manager that provides a SQLalchemy async session for database operations.
 
     Description:
-    - Utilises a With statemtent to safely construct and close async DB sessions.
+        This utility function ensures that each database sessions are properly handled using
+        an 'async with' block. It yields a session instance that can be used to perform
+        asynchronous queries and transactions.
 
     Args:
-        sessionmaker (async_sessionmaker): Used by the generator function to provide multiple async DB session.
+        sessionmaker (async_sessionmaker): 
+            A SQLalchemy asynchronous sessionmaker instance used to create new session objects.
 
-    Returns (Yields):
-        session: SQLalchemy's asynchronous session object used for database querying.
+    Yields:
+        AsyncSession:
+            Instance of SQLalchemy's async session used to interact with a database.
 
     Raises:
         None
