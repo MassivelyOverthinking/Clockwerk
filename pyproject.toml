@@ -26,7 +26,7 @@ keywords = [
 
 classifiers = [
     "Programming Language :: Python :: 3",
-    "Programming Languages :: Pythonn :: 3.10"
+    "Programming Languages :: Pythonn :: 3.10",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Internet :: Monitoring",
@@ -51,7 +51,7 @@ dependencies = [
     "SQLalchemy==2.0.41",
     "tenacity==9.1.2",
     "typing-inspection==0.4.1",
-    "yarl==1.20.0"
+    "yarl==1.20.0",
     "asyncpg>=0.28",
     "aiosqlite>=0.19",
     "mysql-connector-python>=8.0"
