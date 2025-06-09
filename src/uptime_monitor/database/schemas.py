@@ -38,7 +38,7 @@ class MonitorHistory(Base):
         id (Mapped[int]): Primary key identifier for the record.
         url (Mapped[str]): The unique URL of the monitored endpoint.
         timestamp (Mapped[datetime]): UTC timestamp of when the historical record was initialised.
-        stauts_code (Mapped[int]): The HTTP status code recieved during the check.
+        status_code (Mapped[int]): The HTTP status code recieved during the check.
         latency (Mapped[float]): The request-to-response time represented in seconds.
         success (Mapped[bool]): Indicates whether the endpoint check succeeded.
         error (Mapped[str]): A description of any recieved errors encountered during checks.

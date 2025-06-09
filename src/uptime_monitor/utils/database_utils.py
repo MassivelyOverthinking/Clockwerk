@@ -51,7 +51,7 @@ async def write_to_db(result: MonitorResult, sessionmaker: async_sessionmaker):
             session.add(endpoint_status)
 
             await session.commit()
-        except SQLAlchemyError as err:
+        except SQLAlchemyError or Exception as err:
             await session.rollback()
             logger.exception(f"Database operation failed: {err}")
         finally:
