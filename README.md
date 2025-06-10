@@ -10,28 +10,26 @@ Uptime monitor is a Python application designed to monitor the availability and 
 (latency or status) of various API Endpoints (URLs). It tracks the health of the monitored endpoint and stores the results in a database for future analysis and reporting. The application uses SQLalchemy's ORM-based database interaction to store results, and Asyncio's async sessions for asynchronous operations.
 
 ## 🚀 Key Features
-* 👀 Monitors multiple endpoints
-* 🔁 Tracks endpoint health and status with real-time status updates
-* 📕 Logs the latency and status code for each request
-* 🫙 Stores monitoring results in a database of your own choice
-* ➡️ Supports asynchronous database operations to ensure high performance
+* 🔍 Monitors multiple endpoints
+* ⏱️ Tracks endpoint health and status with real-time status updates
+* 📊 Logs the latency and status code for each request
+* 🗃️ Stores monitoring results in a database of your own choice
+* ⚡ Supports asynchronous database operations to ensure high performance
 * 🚨 Sends alert message to report endpoint failure or latency
-* 🤖 Supports MySQL, Prostgresql and SQLite
+* 🧩 Supports MySQL, Prostgresql and SQLite
 
 ## 📦 Installation
-```python
-
+```bash
 pip install async_uptime_monitor 
 poetry add async_uptime_monitor
 
-```
 
 ## 🌎 Code Usage
 >> Start by creating the necessary config models `MonitorConfig`, `EmailConfig`, `DatabaseConfig`.
 
 ```python
-# Import the necessary config-models and schduling loop
-from async_uptime_monitor.scheduler import schduling_loop
+# Import the necessary config-models and scheduling loop
+from async_uptime_monitor.scheduler import scheduling_loop
 from async_uptime_monitor.config import MonitorConfig, EmailConfig, DatabaseConfig
 from async_uptime_monitor.models import Endpoint
 
@@ -70,9 +68,9 @@ db_config = DatabaseConfig(
 >> As Uptime Monitor is an async function it can be run with either `asyncio.run()` or `await`.
 
 ```python
-# Import the necessary config-models and schduling loop
+# Import the necessary config-models and scheduling loop
 import asyncio
-from async_uptime_monitor.scheduler import schduling_loop
+from async_uptime_monitor.scheduler import scheduling_loop
 from async_uptime_monitor.config import MonitorConfig, EmailConfig, DatabaseConfig
 from async_uptime_monitor.models import Endpoint
 
@@ -92,15 +90,28 @@ await scheduling_loop(
 
 ```
 
-## Monitor & Endpoints
+## 📋 Monitor & Endpoints
 >> In order to properly configure the main scheduling_loop, Uptime Monitor requires a list of specified *endpoints* (URLs) scheduled for monitoring.
 >> These *endpoints* are passed in to the main configuration object (MonitorConfig), along with specifications detailing the interval between checks and maximum latency allowed:
 `check_interval`, `latency_threshold`.
 
-## E-mail Alerts
+| **Parameters**    | **Description**                                                   |
+|-------------------|-------------------------------------------------------------------|
+| endpoints         | A list of endpoint-objects to monitor.                            |
+| check_interval    | Time in seconds between each health check (Default: 60)           |
+| latency_threshold | Max latency in seconds before triggering an alert (Default: 1.0)  |
+
+## ✉️ E-mail Alerts
 >> Additionally, Uptime Monitor supports asynchronous email alerts (**aiohttp**) sent to individual e-mails if monitored Endpoints fail their respective health check.
 
-## Database Setup
+| **Parameters** | **Description**                                                        |
+|----------------|------------------------------------------------------------------------|
+| smtp_host      | SMTP server for sending email alerts.                                  |
+| smtp_port      | TSMTP port (Default: 587)                                              |
+| email_from     | Sender's e-mail address.                                               |
+| email_to       | Recipeint's e-mail address.                                            |
+
+## ♾️ Database Setup
 >> Async_uptime_monitor supports asynchronous database operations, allowing users to dynamically store results in one of three currently supported database platforms:
 `MySQL`, `PostgreSQL`, `SQLite`
 >> Built on SQLalchemy's asynchronous sessions and ORM framework, allowing for quick and seamless database connection and storage.
@@ -109,5 +120,34 @@ await scheduling_loop(
 ```python
 # To initialise database connectivity use a DatabaseConfig object to specify desired parameters.
 from async_uptime_monitor.config import DatabaseConfig
+```
 
+| **Parameter** | **Description**                                                      |
+|---------------|----------------------------------------------------------------------|
+| db_activation | Enable/Disable database connection and storage (Default: False)      |
+| db_driver     | One of available drivers `MySQL`, `PostgreSQL`, `SQLite`             |
+| db_host       | Database host (e.g. localhost)                                       |
+| db_name       | Identifying name fo the target database                              |
+| db_user       | Username for database connection                                     |
+| db_password   | Password for database access                                         |
+| db_port       | Port used to connect to database                                     |
 
+## 📈 Future Roadmap
+
+Roadmap over future improvements and appilcation extensions.
+* Slack / Webhook integration for alerts.
+* Docker support for delpoyment
+* Dashboard with data analysis and visualisation (*Prometheus*)
+
+## 🤝 Contributing 
+
+Contributions to the application's future improvements are more than welcome. Feel free to open an issue or submit a pull request.
+1. Fork the repo
+2. Create a new branch (`git checkout -b feature-name`)
+3. Commit your changes (`git commit -am "Add new feature"`)
+4. Pust to the branch (`git push origin feature-name`)
+5. Open a Pull request
+
+## 📝 Licensing
+
+This project is licensed under [MIT License](https://opensource.org/license/mit).
