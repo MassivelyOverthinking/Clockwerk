@@ -3,11 +3,11 @@
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
-from src.uptime_monitor.models import MonitorResult
-from src.uptime_monitor.database.async_connection import get_session
-from src.uptime_monitor.database.schemas import MonitorHistory
-from src.uptime_monitor.utils.common import update_endpoint
-from src.uptime_monitor.logger import get_logger
+from src.clockwerk.models import MonitorResult
+from src.clockwerk.database import get_session
+from src.clockwerk.database import MonitorHistory
+from src.clockwerk.utils import update_endpoint
+from src.clockwerk.logger import get_logger
 
 #-------------------- Logger Setup --------------------
 

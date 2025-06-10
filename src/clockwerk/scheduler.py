@@ -3,11 +3,11 @@
 import asyncio
 import aiohttp
 
-from src.uptime_monitor.monitor import check_endpoint
-from src.uptime_monitor.reporter import handle_result
-from src.uptime_monitor.config.config_models import EmailConfig, MonitorConfig, DatabaseConfig
-from src.uptime_monitor.database.async_connection import init_database
-from src.uptime_monitor.logger import get_logger
+from src.clockwerk.monitor import check_endpoint
+from src.clockwerk.reporter import handle_result
+from src.clockwerk.config import EmailConfig, MonitorConfig, DatabaseConfig
+from src.clockwerk.database import init_database
+from src.clockwerk.logger import get_logger
 
 #-------------------- Logger Setup --------------------
 

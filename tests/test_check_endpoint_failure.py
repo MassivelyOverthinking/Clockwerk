@@ -3,9 +3,9 @@ import aiohttp
 from unittest.mock import patch
 from aiohttp import ClientTimeout
 
-from src.uptime_monitor.monitor import check_endpoint
-from src.uptime_monitor.models import Endpoint
-from src.uptime_monitor.config.config_models import EmailConfig
+from src.clockwerk.monitor import check_endpoint
+from src.clockwerk.models import Endpoint
+from src.clockwerk.config import EmailConfig
 
 @pytest.mark.asyncio
 async def test_check_endpoint_failure():

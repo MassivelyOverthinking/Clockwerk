@@ -8,9 +8,9 @@ from aiohttp import ClientError, ClientTimeout
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type, before_sleep_log
 from time import perf_counter
 
-from src.uptime_monitor.models import MonitorResult, Endpoint
-from src.uptime_monitor.config.config_models import EmailConfig
-from src.uptime_monitor.logger import get_logger
+from src.clockwerk.models import MonitorResult, Endpoint
+from src.clockwerk.config import EmailConfig
+from src.clockwerk.logger import get_logger
 
 #-------------------- Logger Setup --------------------
 

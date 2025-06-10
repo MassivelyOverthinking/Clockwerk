@@ -5,8 +5,8 @@ from contextlib import asynccontextmanager
 from sqlalchemy import URL
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine, async_sessionmaker
 
-from src.uptime_monitor.database.schemas import Base
-from src.uptime_monitor.config.config_models import DatabaseConfig
+from src.clockwerk.database import Base
+from src.clockwerk.config import DatabaseConfig
 
 #-------------------- Asynchronous DB --------------------
 

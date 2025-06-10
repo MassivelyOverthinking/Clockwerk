@@ -1,10 +1,10 @@
 import pytest
 from unittest.mock import patch, AsyncMock
 
-from src.uptime_monitor.reporter import handle_result
-from src.uptime_monitor.models import MonitorResult
-from src.uptime_monitor.reporter import send_email_alert
-from src.uptime_monitor.config.config_models import MonitorConfig, EmailConfig, DatabaseConfig
+from src.clockwerk.reporter import handle_result
+from src.clockwerk.models import MonitorResult
+from src.clockwerk.reporter import send_email_alert
+from src.clockwerk.config import MonitorConfig, EmailConfig, DatabaseConfig
 
 @pytest.mark.asyncio
 async def test_handle_latency_alert():

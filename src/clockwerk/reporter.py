@@ -7,11 +7,11 @@ from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_excep
 from typing import Optional
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
-from src.uptime_monitor.utils.common import create_msg
-from src.uptime_monitor.utils.database_utils import write_to_db
-from src.uptime_monitor.models import MonitorResult
-from src.uptime_monitor.config.config_models import EmailConfig, MonitorConfig, DatabaseConfig
-from src.uptime_monitor.logger import get_logger
+from src.clockwerk.utils import create_msg
+from src.clockwerk.utils import write_to_db
+from src.clockwerk.models import MonitorResult
+from src.clockwerk.config import EmailConfig, MonitorConfig, DatabaseConfig
+from src.clockwerk.logger import get_logger
 
 #-------------------- Logger Setup --------------------
 

@@ -1,4 +1,4 @@
-# 🖥️ Utime Monitor
+# 🖥️ Clockwerk (Uptime Monitor)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
@@ -6,7 +6,7 @@
 
 ---
 
-Uptime monitor is a Python application designed to monitor the availability and performance 
+Clockwerk is a Python application designed to monitor the availability and performance 
 (latency or status) of various API Endpoints (URLs). It tracks the health of the monitored endpoint and stores the results in a database for future analysis and reporting. The application uses SQLalchemy's ORM-based database interaction to store results, and Asyncio's async sessions for asynchronous operations.
 
 ## 🚀 Key Features
@@ -20,8 +20,8 @@ Uptime monitor is a Python application designed to monitor the availability and 
 
 ## 📦 Installation
 ```bash
-pip install async_uptime_monitor 
-poetry add async_uptime_monitor
+pip install clockwerk 
+poetry add clockwerk
 
 
 ## 🌎 Code Usage
@@ -29,9 +29,9 @@ poetry add async_uptime_monitor
 
 ```python
 # Import the necessary config-models and scheduling loop
-from async_uptime_monitor.scheduler import scheduling_loop
-from async_uptime_monitor.config import MonitorConfig, EmailConfig, DatabaseConfig
-from async_uptime_monitor.models import Endpoint
+from clockwerk.scheduler import scheduling_loop
+from clockwerk.config import MonitorConfig, EmailConfig, DatabaseConfig
+from clockwerk.models import Endpoint
 
 # Create an instance of the MonitorConfig to specify monitored endpoints.
 monitor_config = MonitorConfig(
@@ -55,7 +55,7 @@ email_config = EmailConfig(
 db_config = DatabaseConfig(
     db_activation=True,             # Writes results to DB if True.
     db_driver="sqlite",             # Specify the desired DB platform.
-    db_name="uptime_monitor.db",    # Identifying name for DB.
+    db_name="clockwerk.db",         # Identifying name for DB.
     db_user="root",                 # Identifying user for DB.
     db_password="SuperSecret123",   # Individual password for DB access.
     db_host="localhost",            # Host associated with current DB.
@@ -65,14 +65,14 @@ db_config = DatabaseConfig(
 ```
 
 >> Utilise the config models to create an instance of `scheduling_loop` to run.
->> As Uptime Monitor is an async function it can be run with either `asyncio.run()` or `await`.
+>> As Clockwerk's monitor is an async function it can be run with either `asyncio.run()` or `await`.
 
 ```python
 # Import the necessary config-models and scheduling loop
 import asyncio
-from async_uptime_monitor.scheduler import scheduling_loop
-from async_uptime_monitor.config import MonitorConfig, EmailConfig, DatabaseConfig
-from async_uptime_monitor.models import Endpoint
+from clockwerk.scheduler import scheduling_loop
+from clockwerk.config import MonitorConfig, EmailConfig, DatabaseConfig
+from clockwerk.models import Endpoint
 
 # Run the scheduling loop (if running the loop from a synchronous context)
 asyncio.run(scheduling_loop(
@@ -91,7 +91,7 @@ await scheduling_loop(
 ```
 
 ## 📋 Monitor & Endpoints
->> In order to properly configure the main scheduling_loop, Uptime Monitor requires a list of specified *endpoints* (URLs) scheduled for monitoring.
+>> In order to properly configure the main scheduling_loop, Clockwerk requires a list of specified *endpoints* (URLs) scheduled for monitoring.
 >> These *endpoints* are passed in to the main configuration object (MonitorConfig), along with specifications detailing the interval between checks and maximum latency allowed:
 `check_interval`, `latency_threshold`.
 
@@ -102,7 +102,7 @@ await scheduling_loop(
 | latency_threshold | Max latency in seconds before triggering an alert (Default: 1.0)  |
 
 ## ✉️ E-mail Alerts
->> Additionally, Uptime Monitor supports asynchronous email alerts (**aiohttp**) sent to individual e-mails if monitored Endpoints fail their respective health check.
+>> Additionally, Clockwerk supports asynchronous email alerts (**aiohttp**) sent to individual e-mails if monitored Endpoints fail their respective health check.
 
 | **Parameters** | **Description**                                                        |
 |----------------|------------------------------------------------------------------------|
@@ -112,14 +112,14 @@ await scheduling_loop(
 | email_to       | Recipeint's e-mail address.                                            |
 
 ## ♾️ Database Setup
->> Async_uptime_monitor supports asynchronous database operations, allowing users to dynamically store results in one of three currently supported database platforms:
+>> Clockwerk supports asynchronous database operations, allowing users to dynamically store results in one of three currently supported database platforms:
 `MySQL`, `PostgreSQL`, `SQLite`
 >> Built on SQLalchemy's asynchronous sessions and ORM framework, allowing for quick and seamless database connection and storage.
->> If the individual user **does not** require results stored in a database, simply set the DatabaseConfig's activation variable to False, `db_activation=False`. This disables any form of database connection used by the Uptime Monitor. 
+>> If the individual user **does not** require results stored in a database, simply set the DatabaseConfig's activation variable to False, `db_activation=False`. This disables any form of database connection used by the scheduling loop. 
 
 ```python
 # To initialise database connectivity use a DatabaseConfig object to specify desired parameters.
-from async_uptime_monitor.config import DatabaseConfig
+from clockwerk.config import DatabaseConfig
 ```
 
 | **Parameter** | **Description**                                                      |

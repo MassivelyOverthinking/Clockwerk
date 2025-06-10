@@ -1,9 +1,9 @@
 import pytest_asyncio
 import pytest
 from aiohttp import ClientSession
-from src.uptime_monitor.models import Endpoint
-from src.uptime_monitor.monitor import check_endpoint
-from src.uptime_monitor.config.config_models import EmailConfig
+from src.clockwerk.models import Endpoint
+from src.clockwerk.monitor import check_endpoint
+from src.clockwerk.config import EmailConfig
 
 @pytest.mark.asyncio
 async def test_check_endpoint_success():

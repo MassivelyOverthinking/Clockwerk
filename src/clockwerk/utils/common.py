@@ -6,9 +6,9 @@ from datetime import datetime, timezone
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.uptime_monitor.models import MonitorResult
-from src.uptime_monitor.database.schemas import EndpointStatus
-from src.uptime_monitor.logger import get_logger
+from src.clockwerk.models import MonitorResult
+from src.clockwerk.database import EndpointStatus
+from src.clockwerk.logger import get_logger
 
 #-------------------- Logger Setup --------------------
 

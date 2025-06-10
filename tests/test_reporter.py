@@ -2,8 +2,8 @@ import pytest_asyncio
 import pytest
 from unittest.mock import patch, AsyncMock
 
-from src.uptime_monitor.reporter import send_email_alert
-from src.uptime_monitor.config.config_models import EmailConfig
+from src.clockwerk.reporter import send_email_alert
+from src.clockwerk.config import EmailConfig
 
 @pytest.mark.asyncio
 async def test_send_email_alert():
