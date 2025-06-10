@@ -22,6 +22,7 @@ Clockwerk is a Python application designed to monitor the availability and perfo
 ```bash
 pip install clockwerk 
 poetry add clockwerk
+```
 
 
 ## 🌎 Code Usage
