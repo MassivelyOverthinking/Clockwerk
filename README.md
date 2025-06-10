@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
-[![PyPI - Coming Soon](https://img.shields.io/badge/PyPI-coming--soon-yellow)](https://pypi.org/)
+[![PyPI - 0.1.0](https://img.shields.io/badge/PyPI-coming--soon-yellow)](https://pypi.org/)
 
 ---
 
@@ -15,7 +15,7 @@ Uptime monitor is a Python application designed to monitor the availability and 
 * 📕 Logs the latency and status code for each request
 * 🫙 Stores monitoring results in a database of your own choice
 * ➡️ Supports asynchronous database operations to ensure high performance
-* 🚨 Sends alert message to report endpoitn failure or latency
+* 🚨 Sends alert message to report endpoint failure or latency
 * 🤖 Supports MySQL, Prostgresql and SQLite
 
 ## 📦 Installation
@@ -47,10 +47,10 @@ monitor_config = MonitorConfig(
 
 # Model for e-mail configuration used to raise and send alert messages.
 email_config = EmailConfig(
-    smtp_host="smtp.mailtrap.io",
-    smtp_port=587,
-    email_from="randommail@yourdomain.com",
-    email_to="alerts@yourdomain.com"
+    smtp_host="smtp.mailtrap.io",               # SMTP Host
+    smtp_port=587,                              # Port to run your email alerts from
+    email_from="randommail@yourdomain.com",     # Email address sending the alerts
+    email_to="alerts@yourdomain.com"            # Email address receiving the alerts.
 )
 
 # Database configuration model (MySQL, Postgresql, SQLite)
@@ -91,4 +91,23 @@ await scheduling_loop(
 )
 
 ```
+
+## Monitor & Endpoints
+>> In order to properly configure the main scheduling_loop, Uptime Monitor requires a list of specified *endpoints* (URLs) scheduled for monitoring.
+>> These *endpoints* are passed in to the main configuration object (MonitorConfig), along with specifications detailing the interval between checks and maximum latency allowed:
+`check_interval`, `latency_threshold`.
+
+## E-mail Alerts
+>> Additionally, Uptime Monitor supports asynchronous email alerts (**aiohttp**) sent to individual e-mails if monitored Endpoints fail their respective health check.
+
+## Database Setup
+>> Async_uptime_monitor supports asynchronous database operations, allowing users to dynamically store results in one of three currently supported database platforms:
+`MySQL`, `PostgreSQL`, `SQLite`
+>> Built on SQLalchemy's asynchronous sessions and ORM framework, allowing for quick and seamless database connection and storage.
+>> If the individual user **does not** require results stored in a database, simply set the DatabaseConfig's activation variable to False, `db_activation=False`. This disables any form of database connection used by the Uptime Monitor. 
+
+```python
+# To initialise database connectivity use a DatabaseConfig object to specify desired parameters.
+from async_uptime_monitor.config import DatabaseConfig
+
 
