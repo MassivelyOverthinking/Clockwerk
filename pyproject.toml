@@ -21,17 +21,24 @@ keywords = [
     "python",
     "latency",
     "alerts",
-    "endpoints"
+    "endpoints",
+    "status checker",
+    "endpoint monitor",
+    "health checks",
+    "observability",
+    "reliability"
 ]
 
 classifiers = [
     "Development status :: 3 - Alpha",
     "Programming Language :: Python :: 3",
-    "Programming Languages :: Python :: 3.10",
+    "Programming Language :: Python :: 3.10",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+    "Tpoic :: Internet :: Log Analysis",
     "Topic :: Internet :: Monitoring",
     "Topic :: System :: Networking :: Monitoring",
+    "Topic :: Utilities",
     "Intended Audience :: Developers"
 ]
 
@@ -49,7 +56,7 @@ dependencies = [
     "packaging==25.0",
     "propcache==0.3.1",
     "pydantic==2.11.5",
-    "aqlalchemy==2.0.41",
+    "sqlalchemy==2.0.41",
     "tenacity==9.1.2",
     "typing-inspection==0.4.1",
     "yarl==1.20.0",
@@ -68,7 +75,7 @@ dev = [
 ]
 
 [project.urls]
-Homepage = ""
-Documentation = ""
-Source = ""
-Issues = ""
+Homepage = "https://github.com/MassivelyOverthinking/Clockwerk"
+Documentation = "https://github.com/MassivelyOverthinking/Clockwerk#readme"
+Source = "https://github.com/MassivelyOverthinking/Clockwerk"
+Issues = "https://github.com/MassivelyOverthinking/Clockwerk/issues"

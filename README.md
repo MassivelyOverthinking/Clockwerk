@@ -16,7 +16,7 @@ Clockwerk is a Python application designed to monitor the availability and perfo
 * 🗃️ Stores monitoring results in a database of your own choice
 * ⚡ Supports asynchronous database operations to ensure high performance
 * 🚨 Sends alert message to report endpoint failure or latency
-* 🧩 Supports MySQL, Prostgresql and SQLite
+* 🧩 Supports MySQL, PostgreSQL and SQLite
 
 ## 📦 Installation
 ```bash
@@ -51,7 +51,7 @@ email_config = EmailConfig(
     email_to="alerts@yourdomain.com"            # Email address receiving the alerts.
 )
 
-# Database configuration model (MySQL, Postgresql, SQLite)
+# Database configuration model (MySQL, PostgreSQL, SQLite)
 db_config = DatabaseConfig(
     db_activation=True,             # Writes results to DB if True.
     db_driver="sqlite",             # Specify the desired DB platform.
@@ -107,9 +107,9 @@ await scheduling_loop(
 | **Parameters** | **Description**                                                        |
 |----------------|------------------------------------------------------------------------|
 | smtp_host      | SMTP server for sending email alerts.                                  |
-| smtp_port      | TSMTP port (Default: 587)                                              |
+| smtp_port      | SMTP port (Default: 587)                                              |
 | email_from     | Sender's e-mail address.                                               |
-| email_to       | Recipeint's e-mail address.                                            |
+| email_to       | Recipient's e-mail address.                                            |
 
 ## ♾️ Database Setup
 >> Clockwerk supports asynchronous database operations, allowing users to dynamically store results in one of three currently supported database platforms:
@@ -127,16 +127,16 @@ from clockwerk.config import DatabaseConfig
 | db_activation | Enable/Disable database connection and storage (Default: False)      |
 | db_driver     | One of available drivers `MySQL`, `PostgreSQL`, `SQLite`             |
 | db_host       | Database host (e.g. localhost)                                       |
-| db_name       | Identifying name fo the target database                              |
+| db_name       | Identifying name of the target database                              |
 | db_user       | Username for database connection                                     |
 | db_password   | Password for database access                                         |
 | db_port       | Port used to connect to database                                     |
 
 ## 📈 Future Roadmap
 
-Roadmap over future improvements and appilcation extensions.
+Roadmap over future improvements and application extensions.
 * Slack / Webhook integration for alerts.
-* Docker support for delpoyment
+* Docker support for deployment
 * Dashboard with data analysis and visualisation (*Prometheus*)
 
 ## 🤝 Contributing 
@@ -145,7 +145,7 @@ Contributions to the application's future improvements are more than welcome. Fe
 1. Fork the repo
 2. Create a new branch (`git checkout -b feature-name`)
 3. Commit your changes (`git commit -am "Add new feature"`)
-4. Pust to the branch (`git push origin feature-name`)
+4. Push to the branch (`git push origin feature-name`)
 5. Open a Pull request
 
 ## 📝 Licensing
